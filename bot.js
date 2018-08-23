@@ -30,14 +30,15 @@ bot.on('ready', function (evt) {
 });
 
 var commands = {
+	commands : 'commands',
+	help : 'help',
+	getLogChannel : 'getLogChannel',
+	setLogChannel : 'setLogChannel',
+	muteLogChannel : 'muteLogChannel',
 	ping : 'ping',
 	getToken : 'getToken',
 	setToken : 'setToken',
-	commands : 'commands',
 	whoami : 'whoami',
-	getLogChannel : 'getLogChannel',
-	setLogChannel : 'setLogChannel',
-	muteLogChannel : 'muteLogChannel'
 };
 
 
@@ -73,10 +74,19 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 					message: "Current token is " + tokenKey
 				});
 				break;
+			case 'h':
+			case commands.help:
+				// Help will display general text and then drop into commands
+				bot.sendMessage({
+					to: channelID,
+					message: "**Help**\n This is a work in progress. Patience, young padwan."
+				});
+			case 'cmd':
+			case 'cmds':
 			case commands.commands:
 				bot.sendMessage({
 					to: channelID,
-					message: _.toString(_.join(_.keys(commands), "\n"))
+					message: "**Available Commands:**\n" + _.toString(_.join(_.keys(commands), "\n"))
 				});
 				break;
 			case commands.whoami:
