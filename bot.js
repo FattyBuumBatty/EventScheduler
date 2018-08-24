@@ -1,6 +1,7 @@
 var Discord = require('discord.io');
 var logger = require('winston');
 var auth = require('./auth.json');
+var request = require('request');
 var _ = require('lodash');
 
 // Configure logger settings
@@ -31,6 +32,7 @@ bot.on('ready', function (evt) {
 
 var commands = {
 	commands : 'commands',
+	createEvent : 'createEvent',
 	help : 'help',
 	getLogChannel : 'getLogChannel',
 	setLogChannel : 'setLogChannel',
@@ -38,7 +40,7 @@ var commands = {
 	ping : 'ping',
 	getToken : 'getToken',
 	setToken : 'setToken',
-	whoami : 'whoami',
+	whoami : 'whoami'
 };
 
 
@@ -125,6 +127,24 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 					to: channelID,
 					message: "Channel logs are " + (muteLogs ? "" : "not ") + "muted. Note: Server logs still populate."
 				});
+				break;
+			case 'addEvent':
+			case commands.createEvent:
+				//https://maker.ifttt.com/trigger/create_event/with/key/Q6ra2PX5JnZt1VDl1JvA3
+				args.splice(0,1); // remove the trigger
+				request.post(
+					"https://maker.ifttt.com/trigger/create_event/with/key/Q6ra2PX5JnZt1VDl1JvA3",
+					{ form: {value1: _.join(args, " ")} },
+					function(error, resp, body){
+						if(error){
+							logger.info(new Date().toLocaleString('en-US', {hour12: false}) + ' == User: ' + user + ' == Error: ' + error);
+							bot.sendMessage({
+								to: channelID,
+								message: "Something went wrong, unable to create event. Please ask an admin to check the bot logs."
+							});
+							return;
+						}
+					});
 				break;
 			default:
 				bot.sendMessage({
