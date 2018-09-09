@@ -23,6 +23,10 @@ var logChannel = {
 	id: '481673899310841856',
 	name: 'event-cal-server-logs'
 };
+// var eventChannel = {
+// 	id: '451561204679180318',
+// 	name: 'get_togethers'
+// };
 
 bot.on('ready', function (evt) {
 	logger.info('Connected');
@@ -37,6 +41,7 @@ var commands = {
 	getLogChannel : 'getLogChannel',
 	setLogChannel : 'setLogChannel',
 	muteLogChannel : 'muteLogChannel',
+	// setEventChannel : 'setEventChannel',
 	ping : 'ping',
 	getToken : 'getToken',
 	setToken : 'setToken',
@@ -128,6 +133,23 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 					message: "Channel logs are " + (muteLogs ? "" : "not ") + "muted. Note: Server logs still populate."
 				});
 				break;
+			// case commands.setEventChannel:
+			// 	var msg = "No channel \'" + args[1] + "\' found.";
+			// 	var channel = _.find(bot.channels, function(channel){
+			// 		return channel.name === args[1];
+			// 	});
+			// 	if(channel){
+			// 		eventChannel = {
+			// 			id: channel.id,
+			// 			name: channel.name
+			// 		};
+			// 		msg = "Setting channel \'" + channel.name + "\' as bot event output channel.";
+			// 	}
+			// 	bot.sendMessage({
+			// 		to: channelID,
+			// 		message: msg
+			// 	});
+			// 	break;
 			case 'addEvent':
 			case commands.createEvent:
 				//https://maker.ifttt.com/trigger/create_event/with/key/Q6ra2PX5JnZt1VDl1JvA3
@@ -147,7 +169,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 					});
 					bot.sendMessage({
 						to: channelID,
-						message: "Creating event. If no automated message appears within 20 mins, check bot logs."
+						message: "Creating event. If no automated event message appears within 20 mins, check bot logs."
 					});
 				break;
 			default:
