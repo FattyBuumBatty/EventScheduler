@@ -145,6 +145,10 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 							return;
 						}
 					});
+					bot.sendMessage({
+						to: channelID,
+						message: "Creating event. If no automated message appears within 20 mins, check bot logs."
+					});
 				break;
 			default:
 				bot.sendMessage({
